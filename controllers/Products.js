@@ -55,6 +55,7 @@ const addProduct = async (req, res) => {
       color,
       reviews,
       mrp,
+      subcategory,
     } = req.body;
     const categoryName = category; // Replace with the actual category name
 
@@ -79,6 +80,7 @@ const addProduct = async (req, res) => {
       color,
       reviews,
       mrp,
+      subcategory,
     });
     await product.save();
     res.status(201).json({ message: "Product added successfully", product });

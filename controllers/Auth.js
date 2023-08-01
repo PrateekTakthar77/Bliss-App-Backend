@@ -41,6 +41,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const userExist = await User.findOne({ mobile });
     const emailExist = await User.findOne({ email });
 
+    // to create a new admin comment down the bottom code  
     if (role === "Admin" || role === "admin") {
       return res.status(401).json({
         payload: null,
