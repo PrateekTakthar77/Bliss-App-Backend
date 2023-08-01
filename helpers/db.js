@@ -11,6 +11,7 @@ async function mongoConnect() {
       "MongoDB connected Sucessfulyy :) ",
       connection.connection.host
     );
+
   } catch (err) {
     if (err) {
       console.log("uri: ", process.env.MONGODB_URI);

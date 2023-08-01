@@ -3,8 +3,13 @@ const { Product, Category } = require("../models/Product");
 const getAllProducts = async (req, res) => {
   const { search } = req.query
   try {
-    // const products = await Product.find().populate("category", "name");
-    const products = await Product.find({ subcategory: new RegExp(search, 'i') });
+
+    let products
+    if (search) {
+      products = await Product.find({ subcategory: new RegExp(search, 'i') });
+    }
+    products = await Product.find()
+    // .populate("category", "name");
     res.json(products);
   } catch (error) {
     res.status(500).json({ error: error, message: error.message });
