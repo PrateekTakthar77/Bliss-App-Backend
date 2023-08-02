@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose
 
 const categorySchema = new mongoose.Schema({
   name: { type: String, required: true },
 });
 
-const Category = mongoose.model("Category", categorySchema);
+const Category = mongoose.model("category", categorySchema);
 
 const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -18,7 +19,6 @@ const productSchema = new mongoose.Schema({
   //   required: true,
   // },
   category: { type: String },
-  subcategory: { type: String },
   brand: String,
   material: String,
   size: String,
@@ -39,6 +39,6 @@ const productSchema = new mongoose.Schema({
   ],
 });
 
-const Product = mongoose.model("Product", productSchema);
+const Product = mongoose.model("product", productSchema);
 
 module.exports = { Product, Category };

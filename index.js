@@ -17,6 +17,9 @@ const orderRoutes = require("./routes/Order.routes");
 const adminRouter = require("./routes/AdminOrders.routes");
 const { authorizeUser } = require("./middlewares/AccessAuth");
 
+
+const { Product } = require('./models/Product')
+
 //Connecting MongoDB
 mongoConnect();
 const app = express();
@@ -33,6 +36,12 @@ app.get("/", (req, res) => {
   res.send(`Welcome To Jwell Bliss ${count++}`);
 });
 
+app.get('/products/', async (req, res, next) => {
+
+
+  let products = await Product.findById('64941d38825d2793151c9478').exec()
+  return res.json(products)
+})
 app.use(
   "/api/auth",
   (res, req, next) => {
@@ -57,6 +66,7 @@ app.use(
   },
   productRouter
 );
+
 
 app.use("/api/carts", cartRouter);
 

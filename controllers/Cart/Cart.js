@@ -1,8 +1,12 @@
 const Cart = require("../../models/Cart.model");
 const Order = require("../../models/Order.model");
+const { Types, isValidObjectId } = require('mongoose')
+const createError = require('http-errors')
+
 
 const { v4: uuidv4 } = require("uuid");
 const { Product } = require("../../models/Product");
+const { log } = require("firebase-functions/logger");
 const getCart = async (req, res) => {
   console.log("i am in getCart", req.user);
   try {
@@ -25,7 +29,7 @@ const getCart = async (req, res) => {
   }
 };
 
-const addItemToCart = async (req, res) => {
+const addItemToCart = async (req, res, next) => {
   console.log("i am in addCart", req.user);
   try {
     // Extract the product ID and quantity from the request body
@@ -62,8 +66,13 @@ const addItemToCart = async (req, res) => {
       // If the product doesn't exist, add it to the cart
       cart.items.push({ product: productId, quantity: parseInt(quantity) });
     }
+    if (!isValidObjectId(productId)) {
+      next(createError('ProductId is invalid'))
+    }
+    // const productForPrice = await Product.findById(productId).select("price");/
 
-    const productForPrice = await Product.findById(productId).select("price");
+    const productForPrice = await Product.findById('64941d38825d2793151c9478')
+    console.log(`++++++++++++++++++++++`, productForPrice);
 
     const orderValue = await cart.calculateTotal(productForPrice);
     cart.total = orderValue;

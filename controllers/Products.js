@@ -28,7 +28,7 @@ const getAllCategories = async (req, res) => {
 const getProductById = async (req, res) => {
   try {
     const { productId } = req.params;
-    console.log("productId", req);
+
     const product = await Product.findById(productId).populate(
       "category",
       "name"
@@ -60,7 +60,7 @@ const addProduct = async (req, res) => {
       color,
       reviews,
       mrp,
-      subcategory,
+      // subcategory,
     } = req.body;
     const categoryName = category; // Replace with the actual category name
 
@@ -85,7 +85,7 @@ const addProduct = async (req, res) => {
       color,
       reviews,
       mrp,
-      subcategory,
+      // subcategory,
     });
     await product.save();
     res.status(201).json({ message: "Product added successfully", product });
