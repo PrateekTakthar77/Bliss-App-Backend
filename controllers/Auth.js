@@ -41,13 +41,13 @@ const registerUser = asyncHandler(async (req, res) => {
     const userExist = await User.findOne({ mobile });
     const emailExist = await User.findOne({ email });
 
-    // to create a new admin comment down the bottom code  
-    // if (role === "Admin" || role === "admin") {
-    //   return res.status(401).json({
-    //     payload: null,
-    //     message: "Admin Role is not allowed to register",
-    //   });
-    // }
+    // to create a new admin comment down the bottom code
+    if (role === "Admin" || role === "admin") {
+      return res.status(401).json({
+        payload: null,
+        message: "Admin Role is not allowed to register",
+      });
+    }
 
     if (userExist || emailExist) {
       return res.status(409).json({
