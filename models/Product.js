@@ -5,7 +5,12 @@ const categorySchema = new mongoose.Schema({
   name: { type: String, required: true },
 });
 
+const subcategorySchema = new mongoose.Schema({
+  name: { type: String, required: true },
+});
+
 const Category = mongoose.model("category", categorySchema);
+const subCategory = mongoose.model("subcategory", subcategorySchema)
 
 const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -18,7 +23,8 @@ const productSchema = new mongoose.Schema({
   //   ref: "Category",
   //   required: true,
   // },
-  category: { type: String },
+  category: String,
+  subcategory: { type: String },
   brand: String,
   material: String,
   size: String,
@@ -41,4 +47,4 @@ const productSchema = new mongoose.Schema({
 
 const Product = mongoose.model("product", productSchema);
 
-module.exports = { Product, Category };
+module.exports = { Product, Category, subCategory };

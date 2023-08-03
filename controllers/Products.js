@@ -60,32 +60,34 @@ const addProduct = async (req, res) => {
       color,
       reviews,
       mrp,
-      // subcategory,
+      subcategory,
     } = req.body;
-    const categoryName = category; // Replace with the actual category name
+
+    console.log("Received data", category, subcategory)
+
 
     // Find the category by its name
-    let categoryInDb = await Category.findOne({ name: categoryName });
+    // let categoryInDb = await Category.findOne({ name: category });
 
-    // If the category doesn't exist, create a new one- ()
-    if (!categoryInDb) {
-      categoryInDb = new Category({ name: categoryName });
-      await categoryInDb.save();
-    }
+    // // If the category doesn't exist, create a new one- ()
+    // if (!categoryInDb) {
+    //   categoryInDb = new Category({ name: categoryName });
+    //   await categoryInDb.save();
+    // }
 
     const product = new Product({
       name,
       description,
       price,
       images,
-      category: categoryInDb._id,
+      category,
       brand,
       material,
       size,
       color,
       reviews,
       mrp,
-      // subcategory,
+      subcategory,
     });
     await product.save();
     res.status(201).json({ message: "Product added successfully", product });
