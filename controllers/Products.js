@@ -5,8 +5,10 @@ const getAllProducts = async (req, res) => {
   try {
 
     let products
+    console.log(`let productssssssssss`, products)
     if (search) {
-      products = await Product.find({ subcategory: new RegExp(search, 'i') });
+      // changes made 
+      products = await Product.find({ $or: [subcategory, new RegExp(search, 'i'), category, new RegExp(search, 'i')] });
     }
     products = await Product.find()
     // .populate("category", "name");
@@ -61,9 +63,10 @@ const addProduct = async (req, res) => {
       reviews,
       mrp,
       subcategory,
+      weight,
     } = req.body;
 
-    console.log("Received data", category, subcategory)
+    console.log("Received data", category, subcategory, size)
 
 
     // Find the category by its name
@@ -88,6 +91,7 @@ const addProduct = async (req, res) => {
       reviews,
       mrp,
       subcategory,
+      weight
     });
     await product.save();
     res.status(201).json({ message: "Product added successfully", product });
