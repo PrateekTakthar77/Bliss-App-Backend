@@ -1,22 +1,55 @@
-const { Product, Category } = require("../models/Product");
+const { log } = require("firebase-functions/logger");
+const { Product, Category, subCategory } = require("../models/Product");
+
+// code written by amar sir
+// const getAllProducts = async (req, res) => {
+//   const { search } = req.query
+//   console.log(`SEARCH`, search)
+//   try {
+
+//     let products
+//     // console.log(`let productssssssssss`, products)
+//     if (search) {
+//       // changes made 
+//       products = await Product.find({
+//         $or: [category, new RegExp(search, 'i'),
+//           subcategory, new RegExp(search, 'i')]
+//       });
+//       console.log(products)
+//     }
+//     products = await Product.find()
+//     // .populate("category", "name");
+//     res.json(products);
+//   } catch (error) {
+//     res.status(500).json({ error: error, message: error.message });
+//   }
+// };
 
 const getAllProducts = async (req, res) => {
-  const { search } = req.query
+  const { search } = req.query;
+  console.log(`SEARCH`, search);
   try {
+    let products;
 
-    let products
-    console.log(`let productssssssssss`, products)
     if (search) {
-      // changes made 
-      products = await Product.find({ $or: [subcategory, new RegExp(search, 'i'), category, new RegExp(search, 'i')] });
+      products = await Product.find({
+        $or: [
+          { category: new RegExp(search, 'i') },
+          { subcategory: new RegExp(search, 'i') },
+          { name: new RegExp(search, 'i') },
+          { weight: new RegExp(search, 'i') }
+        ],
+      });
+    } else {
+      products = await Product.find();
     }
-    products = await Product.find()
-    // .populate("category", "name");
+
     res.json(products);
   } catch (error) {
     res.status(500).json({ error: error, message: error.message });
   }
 };
+
 
 const getAllCategories = async (req, res) => {
   try {
