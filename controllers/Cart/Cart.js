@@ -141,7 +141,6 @@ const updateCartOrderState = async (req, res) => {
     if (!order) {
       return res.status(404).json({ error: "Order not found" });
     }
-
     // Update the quantity of the item
     order.state = statusState;
     order.status = statusState;

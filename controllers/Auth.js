@@ -49,13 +49,19 @@ const registerUser = asyncHandler(async (req, res) => {
     //   });
     // }
 
-    if (userExist || emailExist) {
+    if (emailExist) {
       return res.status(409).json({
         payload: null,
-        message: "Looks like you already have an account with us.",
+        message: "Looks like your Email already Exists.",
       });
     }
 
+    if (userExist) {
+      return res.status(407).json({
+        payload: null,
+        message: "Looks like your mobile already Exists.",
+      });
+    }
     const otp = generateOTP(6); // Generate a 6-digit OTP
 
     const hashedPassword = await bcrypt.hash(password, 10);
