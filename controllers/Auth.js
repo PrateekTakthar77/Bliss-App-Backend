@@ -67,8 +67,6 @@ const registerUser = asyncHandler(async (req, res) => {
     }
     const otp = generateOTP(6); // Generate a 6-digit OTP
     const hashedPassword = await bcrypt.hash(password, 10);
-    // const userCount = ;
-    // console.log(`usercoountttttttttt`, userCount)
     const newUser = await User.create({
       name,
       mobile,

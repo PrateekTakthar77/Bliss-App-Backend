@@ -6,9 +6,7 @@ const getAllOrders = async (req, res) => {
   try {
     // Populate the user, items, and products in the order
     const orders = await Order.find()
-      .populate("user", "name email mobile")
-      .populate("items.product", "name price");
-
+    console.log(`orders:`, orders);
     res.json(orders);
   } catch (error) {
     console.error(error);
@@ -23,11 +21,6 @@ const getOrderById = async (req, res) => {
   try {
     const orderId = req.params.id;
     const order = await Order.findById(orderId)
-      .populate("user", "-password")
-      .populate(
-        "items.product",
-        "name price description category brand material size color"
-      );
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }

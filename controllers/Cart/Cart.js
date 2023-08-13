@@ -13,9 +13,15 @@ const getCart = async (req, res) => {
     // Retrieve the current user's shopping cart from the database
     console.log("i am in getCart", req.user);
     const user = req.user; // Assuming the user is authenticated and available in the request object
-    const cart = await Cart.findOne({ user: user._id }).populate(
-      "items.product"
-    );
+    const cart = await Cart.findOne({ user: user._id })
+      .populate({
+        path: 'items.product',
+        model: 'product'
+      })
+
+    // .populate(
+    //   "items.product"
+    // );
 
     if (!cart) {
       return res.status(404).json({ error: "Cart not found" });
@@ -53,7 +59,6 @@ const addItemToCart = async (req, res, next) => {
       // If the cart doesn't exist, create a new one for the user
       cart = new Cart({ user: user._id, items: [] });
     }
-
     // Check if the product already exists in the cart
     const existingItem = cart.items.find(
       (item) => item.product.toString() === productId
@@ -165,25 +170,26 @@ const removeCartItem = async (req, res) => {
     const { id } = req.params;
 
     // Retrieve the current user's shopping cart from the database
-    const user = req.user; // Assuming the user is authenticated and available in the request object
-    const cart = await Cart.findOne({ user: user._id });
+    // const user = req.user; // Assuming the user is authenticated and available in the request object
+    const cart = await Cart.findOne({ user: req.user?._id });
 
     if (!cart) {
       return res.status(404).json({ error: "Cart not found" });
     }
 
-    // Find the index of the item in the cart
+
     const itemIndex = cart.items.findIndex(
-      (item) => item._id.toString() === id
+      (item) => item.product.toString() === id
     );
 
     if (itemIndex === -1) {
       return res.status(404).json({ error: "Item not found in cart" });
     }
+    cart.items.forEach((item) => { console.log(item.product) })
+    // Find the index of the item in the cart and filter it
 
-    // Remove the item from the cart
-    cart.items.splice(itemIndex, 1);
-
+    cart.items = cart.items.filter((item) => { return item.product.toString() !== id })
+    console.log("Removed item and now the cart is", cart)
     // Save the updated cart to the database
     await cart.save();
 
@@ -207,9 +213,14 @@ const processCheckout = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const cart = await Cart.findOne({ user: user._id }).populate(
-      "items.product"
-    );
+    // const cart = await Cart.findOne({ user: user._id }).populate(
+    //   "items.product"
+    // );
+    const cart = await Cart.findOne({ user: user._id })
+      .populate({
+        path: 'items.product',
+        model: 'product'
+      })
 
     if (!cart) {
       return res.status(404).json({ error: "Cart not found" });
