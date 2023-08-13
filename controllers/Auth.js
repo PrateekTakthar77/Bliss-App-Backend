@@ -9,6 +9,8 @@ const {
 } = require("../helpers/Email/EmailMessageGenrator");
 const SibApiV3Sdk = require("sib-api-v3-sdk");
 const { generateOTP } = require("../helpers/OTP.verify");
+const { user } = require("firebase-functions/v1/auth");
+const { log } = require("firebase-functions/logger");
 const { TransactionalEmailsApi } = SibApiV3Sdk;
 const { ApiClient } = SibApiV3Sdk;
 
@@ -22,6 +24,7 @@ const registerUserSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().required(),
   role: Joi.string().required(),
+  count: Joi.number()
 });
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -38,8 +41,8 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     const { name, mobile, email, password, role } = req.body;
-    const userExist = await User.findOne({ mobile });
-    const emailExist = await User.findOne({ email });
+    const userExistsWithMobile = await User.findOne({ mobile });
+    const userExistsWithEmail = await User.findOne({ email });
 
     // to create a new admin comment down the bottom code
     // if (role === "Admin" || role === "admin") {
@@ -49,23 +52,23 @@ const registerUser = asyncHandler(async (req, res) => {
     //   });
     // }
 
-    if (emailExist) {
+    if (userExistsWithEmail) {
       return res.status(409).json({
         payload: null,
         message: "Looks like your Email already Exists.",
       });
     }
 
-    if (userExist) {
+    if (userExistsWithMobile) {
       return res.status(407).json({
         payload: null,
         message: "Looks like your mobile already Exists.",
       });
     }
     const otp = generateOTP(6); // Generate a 6-digit OTP
-
     const hashedPassword = await bcrypt.hash(password, 10);
-
+    // const userCount = ;
+    // console.log(`usercoountttttttttt`, userCount)
     const newUser = await User.create({
       name,
       mobile,
@@ -73,15 +76,15 @@ const registerUser = asyncHandler(async (req, res) => {
       otp,
       password: hashedPassword,
       role,
+      userCount: ((await User.find({}))?.length ?? 0) + 1,
     });
-
-    // Send the OTP to the user's email address
-    // sendOTPEmail(email, otp);
 
     const payload = {
       name: newUser.name,
       email: newUser.email,
       _id: newUser.id,
+      userCount: newUser.userCount,
+      mobile: newUser.mobile
     };
     const token = generateJwtToken(payload);
     return res.status(201).json({

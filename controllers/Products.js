@@ -12,8 +12,8 @@ const { Product, Category, subCategory } = require("../models/Product");
 //     if (search) {
 //       // changes made 
 //       products = await Product.find({
-//         $or: [category, new RegExp(search, 'i'),
-//           subcategory, new RegExp(search, 'i')]
+//         $or: [{category: new RegExp(search, 'i')},
+//           {subcategory: new RegExp(search, 'i')}]
 //       });
 //       console.log(products)
 //     }
@@ -50,6 +50,31 @@ const getAllProducts = async (req, res) => {
   }
 };
 
+// testing Product
+// const searchAllProducts = async (req, res) => {
+//   const { search } = req.query;
+//   console.log(`SEARCH name Product`, search);
+//   try {
+//     let products;
+
+//     if (search) {
+//       products = await Product.find({
+//         $or: [
+//           // { category: new RegExp(search, 'i') },
+//           // { subcategory: new RegExp(search, 'i') },
+//           { name: new RegExp(search, 'i') },
+//           // { weight: new RegExp(search, 'i') }
+//         ],
+//       });
+//     } else {
+//       products = await Product.find();
+//     }
+
+//     res.json(products);
+//   } catch (error) {
+//     res.status(500).json({ error: error, message: error.message });
+//   }
+// };
 
 const getAllCategories = async (req, res) => {
   try {

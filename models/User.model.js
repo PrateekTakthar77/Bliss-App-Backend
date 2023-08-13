@@ -1,3 +1,4 @@
+const { boolean } = require("joi");
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
@@ -18,6 +19,15 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     userDetails: { type: mongoose.Schema.Types.ObjectId, ref: "UserDetails" },
+    userCount: {
+      type: Number,
+      default: 1
+    },
+    // to disable and enable user 
+    enable: {
+      type: Boolean,
+      default: true
+    },
   },
   {
     timestamps: true,
