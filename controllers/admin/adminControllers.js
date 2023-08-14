@@ -6,7 +6,6 @@ const getAllOrders = async (req, res) => {
   try {
     // Populate the user, items, and products in the order
     const orders = await Order.find()
-    console.log(`orders:`, orders);
     res.json(orders);
   } catch (error) {
     console.error(error);

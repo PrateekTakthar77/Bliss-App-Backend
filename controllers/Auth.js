@@ -165,6 +165,7 @@ const logInUser = async (req, res) => {
       mobile: user.mobile,
       email: user.email,
       _id: user.id,
+      userCount: user.userCount
     };
 
     const token = generateJwtToken(payload);
