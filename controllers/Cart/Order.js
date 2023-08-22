@@ -3,14 +3,14 @@ const { v4: uuidv4 } = require("uuid");
 // Get a list of orders for the current user
 const getAllOrders = async (req, res) => {
   try {
-    const userId = req.user.id; // Assuming you have authentication middleware to get the current user's ID
-    const orders = await Order.find({ userId });
+    const userId = req.user._id;
+    const orders = await Order.find({ user: userId });
     res.json(orders);
   } catch (error) {
     console.error(error);
     res
       .status(500)
-      .json({ payload: null, message: error.message || "An error occurred" });
+      .json({ payload: null, message: error.message || "An error occurred prateek" });
   }
 };
 
