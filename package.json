@@ -33,7 +33,7 @@
     "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.2.3",
-    "nodemailer": "^6.9.3",
+    "nodemailer": "^6.9.4",
     "nodemon": "^3.0.1",
     "sib-api-v3-sdk": "^8.5.0",
     "uuid": "^9.0.0"

@@ -15,6 +15,7 @@ const errorReqRouter = require("./middlewares/errorRouteHandler");
 const cartRouter = require("./routes/Cart.routes");
 const orderRoutes = require("./routes/Order.routes");
 const adminRouter = require("./routes/AdminOrders.routes");
+// const userRouter = require("./routes/user.routes")
 const { authorizeUser } = require("./middlewares/AccessAuth");
 
 
@@ -73,6 +74,8 @@ app.use("/api/carts", cartRouter);
 app.use("/api/checkouts", orderRoutes);
 
 app.use("/api/admin", adminRouter);
+
+// app.use("/api/user", userRouter)
 
 //error handler -----
 app.use(

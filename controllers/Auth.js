@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const User = require("../models/User.model");
+// const User = require("../models/User.model");
 const { generateJwtToken } = require("../helpers/JWT.Verify");
 const asyncHandler = require("express-async-handler");
 const Joi = require("joi");
@@ -99,6 +99,41 @@ const registerUser = asyncHandler(async (req, res) => {
     });
   }
 });
+
+const User = require("../models/User.model");
+const sendEmail = require("../utils/sendEmail");
+
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    // console.log("Finding user by email:", user);
+    if (!user) {
+      console.log(`User not found for email: ${email}`);
+      return res.status(400).json({
+        message: `User Not Found with ${email}`
+      });
+    }
+    const resetToken = generateJwtToken({ name: user.name, email: user.email, _id: user.id, userCount: user.userCount, mobile: user.mobile }); // Implement this function
+    user.resetToken = resetToken;
+    user.resetTokenExpires = Date.now() + 10 * 60 * 1000; // Token expires in 10 minutes
+    // const newuser = await user.save();
+    await user.save();
+    const resetLink = `http://localhost:3000/resetpassword/${resetToken}`;
+    const emailContent = `If you requested to reset your password, reset now within 10 minutes. Otherwise, ignore this message. <a href="${resetLink}">Click to Reset</a>`;
+    await sendEmail(user.email, "Password Reset Request", emailContent);
+    console.log("Reset email sent successfully");
+    await user.save();
+    res.status(200).json({
+      success: true,
+      message: "Password Chaanged",
+    })
+  } catch (error) {
+    res.json(error)
+  }
+
+}
 
 // Function to send OTP email
 // async function sendOTPEmail(email, otp) {
@@ -318,4 +353,5 @@ module.exports = {
   verifyUserEmailUsingOtp,
   resendOtp,
   adminLogin,
+  forgotPassword
 };
