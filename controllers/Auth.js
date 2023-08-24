@@ -121,7 +121,7 @@ const forgotPassword = async (req, res) => {
     user.resetTokenExpires = Date.now() + 60 * 60 * 1000; // Token expires in 60 minutes
     // const newuser = await user.save();
     await user.save();
-    const resetLink = `http://localhost:3000/resetpassword/${resetToken}`;
+    const resetLink = `http://localhost:5009/resetpassword/${resetToken}`;
     const emailContent = `If you requested to reset your password, reset now within 60 minutes. Otherwise, ignore this message. <a href="${resetLink}">Click to Reset</a>`;
     await sendEmail(user.email, "Password Reset Request", emailContent);
     console.log("Reset email sent successfully");
