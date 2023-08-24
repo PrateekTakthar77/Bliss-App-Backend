@@ -1,11 +1,11 @@
 const { createTransport } = require("nodemailer");
 const sendEmail = async (to, subject, text) => {
     const transpoter = createTransport({
-        host: "sandbox.smtp.mailtrap.io",
-        port: 2525,
+        host: process.env.SMTP_HOST,
+        port: process.env.SMTP_PORT,
         auth: {
-            user: "80d9c4c672d0c4",
-            pass: "95e933cdfeb075"
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS
         }
     });
     await transpoter.sendMail({
