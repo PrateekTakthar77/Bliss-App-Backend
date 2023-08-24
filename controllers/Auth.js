@@ -100,6 +100,7 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
+// forgot pass 
 const User = require("../models/User.model");
 const sendEmail = require("../utils/sendEmail");
 
@@ -117,11 +118,11 @@ const forgotPassword = async (req, res) => {
     }
     const resetToken = generateJwtToken({ name: user.name, email: user.email, _id: user.id, userCount: user.userCount, mobile: user.mobile }); // Implement this function
     user.resetToken = resetToken;
-    user.resetTokenExpires = Date.now() + 10 * 60 * 1000; // Token expires in 10 minutes
+    user.resetTokenExpires = Date.now() + 60 * 60 * 1000; // Token expires in 60 minutes
     // const newuser = await user.save();
     await user.save();
     const resetLink = `http://localhost:3000/resetpassword/${resetToken}`;
-    const emailContent = `If you requested to reset your password, reset now within 10 minutes. Otherwise, ignore this message. <a href="${resetLink}">Click to Reset</a>`;
+    const emailContent = `If you requested to reset your password, reset now within 60 minutes. Otherwise, ignore this message. <a href="${resetLink}">Click to Reset</a>`;
     await sendEmail(user.email, "Password Reset Request", emailContent);
     console.log("Reset email sent successfully");
     await user.save();
@@ -133,6 +134,38 @@ const forgotPassword = async (req, res) => {
     res.json(error)
   }
 
+}
+
+const resetPassword = async (req, res) => {
+  const { resetToken } = req.params;
+  try {
+    const user = await User.findOne({
+      resetToken,
+      resetTokenExpires: {
+        $gt: Date.now(),
+      },
+    })
+    if (!user) {
+      res.status(400).json({
+        status: 400,
+        message: "user not found"
+      })
+    }
+    const newPassword = req.body.password; // Get the new password from the request
+    const hashedPassword = await bcrypt.hash(newPassword, 10); // Hash the new password
+    user.password = hashedPassword; // Set the hashed password to the user object
+    await user.save();
+    res.status(200).json({
+      success: true,
+      message: "Password Changed sucessfully",
+    })
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      status: 500,
+      message: "Internal server error",
+    });
+  }
 }
 
 // Function to send OTP email
@@ -353,5 +386,6 @@ module.exports = {
   verifyUserEmailUsingOtp,
   resendOtp,
   adminLogin,
-  forgotPassword
+  forgotPassword,
+  resetPassword,
 };
