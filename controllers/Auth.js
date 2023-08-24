@@ -127,7 +127,7 @@ const forgotPassword = async (req, res) => {
     await user.save();
     res.status(200).json({
       success: true,
-      message: "Password Chaanged",
+      message: `Password Change Request Email sent to ${user.email}`,
     })
   } catch (error) {
     res.json(error)
