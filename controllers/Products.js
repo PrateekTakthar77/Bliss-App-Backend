@@ -37,7 +37,7 @@ const getAllProducts = async (req, res) => {
           // { category: new RegExp(search, 'i') },
           { subcategory: new RegExp(search, 'i') },
           // { name: new RegExp(search, 'i') },
-          { weight: new RegExp(search, 'i') }
+          { purity: new RegExp(search, 'i') }
         ],
       });
     } else {
@@ -122,6 +122,7 @@ const addProduct = async (req, res) => {
       mrp,
       subcategory,
       weight,
+      purity
     } = req.body;
 
     console.log("Received data", category, subcategory, size)
@@ -149,7 +150,8 @@ const addProduct = async (req, res) => {
       reviews,
       mrp,
       subcategory,
-      weight
+      weight,
+      purity
     });
     await product.save();
     res.status(201).json({ message: "Product added successfully", product });
@@ -199,6 +201,7 @@ const editProduct = async (req, res) => {
     color,
     reviews,
     mrp,
+    purity,
   } = req.body;
 
   const { productId } = req.params;
@@ -244,6 +247,7 @@ const editProduct = async (req, res) => {
     product.color = color || product.color;
     product.reviews = reviews || product.reviews;
     product.mrp = mrp || product.mrp;
+    product.purity = purity || product.purity;
 
     await product.save();
     console.log("product", product);

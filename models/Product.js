@@ -29,6 +29,7 @@ const productSchema = new mongoose.Schema({
   material: String,
   size: String,
   weight: String,
+  purity: String,
   color: String,
   gemstones: [
     {
