@@ -122,7 +122,8 @@ const addProduct = async (req, res) => {
       mrp,
       subcategory,
       weight,
-      purity
+      purity,
+      mcharges
     } = req.body;
 
     console.log("Received data", category, subcategory, size)
@@ -151,7 +152,8 @@ const addProduct = async (req, res) => {
       mrp,
       subcategory,
       weight,
-      purity
+      purity,
+      mcharges
     });
     await product.save();
     res.status(201).json({ message: "Product added successfully", product });
@@ -202,6 +204,7 @@ const editProduct = async (req, res) => {
     reviews,
     mrp,
     purity,
+    mcharges
   } = req.body;
 
   const { productId } = req.params;
@@ -248,6 +251,7 @@ const editProduct = async (req, res) => {
     product.reviews = reviews || product.reviews;
     product.mrp = mrp || product.mrp;
     product.purity = purity || product.purity;
+    product.mcharges = mcharges || product.mcharges;
 
     await product.save();
     console.log("product", product);
