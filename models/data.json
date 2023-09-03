@@ -1,0 +1,170 @@
+[
+    {
+        "_id": "64c3a779b1e2cae7f019a246",
+        "category": "Plain Jewellery",
+        "subcategory": [
+            {
+                "name": "Sets",
+                "makingCharges": 4.50
+            },
+            {
+                "name": "Mangal Sutra",
+                "makingCharges": 4.50
+            },
+            {
+                "name": "Tops",
+                "makingCharges": 4.50
+            },
+            {
+                "name": "Handmade Ladies Ring",
+                "makingCharges": 4.50
+            },
+            {
+                "name": "Handmade Gents Ring",
+                "makingCharges": 4.50
+            },
+            {
+                "name": "Bracelets",
+                "makingCharges": 4.50
+            },
+            {
+                "name": "UV Shaped Bali",
+                "makingCharges": 4.50
+            },
+            {
+                "name": "Rajkot Items",
+                "makingCharges": 4.50
+            },
+            {
+                "name": "Long Sets",
+                "makingCharges": 4.50
+            },
+            {
+                "name": "Choker Sets",
+                "makingCharges": 4.50
+            },
+            {
+                "name": "Bangles",
+                "makingCharges": 4.50
+            },
+            {
+                "name": "Krade",
+                "makingCharges": 4.50
+            },
+            {
+                "name": "God Pendents",
+                "makingCharges": 4.50
+            },
+        ]
+    },
+    {
+        "_id": "64c3a779b1e2cae7f019a249",
+        "category": "Casting CZ Jewellery",
+        "subcategory": [
+            {
+                "name": "Neklace Set",
+                "makingCharges": 7.0
+            },
+            {
+                "name": "Mangal Sutra",
+                "makingCharges": 7.0
+            },
+            {
+                "name": "Ladies Ring",
+                "makingCharges": 7.0
+            },
+            {
+                "name": "Cocktail Ring",
+                "makingCharges": 7.0
+            },
+            {
+                "name": "Ladies Solitaire Ring",
+                "makingCharges": 7.0
+            },
+            {
+                "name": "Gents Ring",
+                "makingCharges": 7.0
+            },
+            {
+                "name": "Gents Solitaire Ring",
+                "makingCharges": 7.0
+            },
+            {
+                "name": "Tops",
+                "makingCharges": 7.0
+            },
+            {
+                "name": "Solitaire Tops",
+                "makingCharges": 7.0
+            },
+            {
+                "name": "Bali",
+                "makingCharges": 7.0
+            },
+            {
+                "name": "Pendents Set",
+                "makingCharges": 7.0
+            },
+            {
+                "name": "Solitaire Pendents Set",
+                "makingCharges": 7.0
+            },
+            {
+                "name": "Charms",
+                "makingCharges": 7.0
+            },
+            {
+                "name": "Gold Pendents",
+                "makingCharges": 7.0
+            },
+            {
+                "name": "Bracelets",
+                "makingCharges": 7.0
+            },
+        ]
+    },
+    {
+        "_id": "64c3a779b1e2cae7f019a248",
+        "category": "Casting Jewellery",
+        "subcategory": [
+            {
+                "name": "Ladies Ring",
+            },
+            {
+                "name": "Gents Ring",
+                "makingCharges": 7.0
+            },
+            {
+                "name": "Pendents",
+                "makingCharges": 7.0
+            },
+            {
+                "name": "Tops",
+                "makingCharges": 7.0
+            },
+            {
+                "name": "Gold Pendents",
+                "makingCharges": 7.0
+            },
+            "Gold Pendents"
+        ]
+    },
+    {
+        "_id": "64c3a779b1e2cae7f019a245",
+        "subcategory": [
+            "Machine Chains",
+            "Silky Rope",
+            "Indo Chains",
+            "Kaju Katli",
+            "Solid Nawabi",
+            "Hollow Nawabi",
+            "Rodium",
+            "Handmade Chains",
+            "Hollow Chains",
+            "Madarasi Chains",
+            "Choco Chains",
+            "Indo Choco Chains"
+        ],
+        "category": "Chain"
+    }
+]
