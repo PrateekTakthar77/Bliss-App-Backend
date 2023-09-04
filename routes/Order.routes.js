@@ -12,7 +12,7 @@ router.get("/order", accessAuth, getAllOrders);
 // router.get("/:id", ordersController.getOrderById);
 router.get("/order/:id", getOrderById);
 // router.post("/direct", ordersController.createOrder);
-router.put("/:id", updateOrder);
+router.put("/state/:id", updateOrder); // use _id 
 // router.delete("/:id", ordersController.cancelOrder);
 
 module.exports = router;

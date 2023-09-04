@@ -50,7 +50,7 @@ const orderSchema = new mongoose.Schema(
     orderId: {
       type: String,
       required: true,
-      default: " For OrderId refers to this order _ID",
+      // default: " For OrderId refers to this order _ID",
     },
   },
   {
