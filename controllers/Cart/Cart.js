@@ -40,16 +40,6 @@ const addItemToCart = async (req, res, next) => {
   try {
     // Extract the product ID and quantity from the request body
     const { productId, quantity } = req.body;
-    if (
-      !productId ||
-      !quantity ||
-      Number(quantity) < 1 ||
-      req.user === undefined
-    ) {
-      return res
-        .status(400)
-        .json({ payload: null, message: error.message || "An error occurred" });
-    }
 
     // Retrieve the current user's shopping cart from the database
     const user = req.user; // Assuming the user is authenticated and available in the request object
@@ -74,10 +64,10 @@ const addItemToCart = async (req, res, next) => {
     if (!isValidObjectId(productId)) {
       next(createError('ProductId is invalid'))
     }
-    // const productForPrice = await Product.findById(productId).select("price");/
+    const productForPrice = await Product.findById(productId).select("price");
 
-    const productForPrice = await Product.findById('64941d38825d2793151c9478')
-    console.log(`++++++++++++++++++++++`, productForPrice);
+    // const productForPrice = await Product.findById('64941d38825d2793151c9478')
+    // console.log(`++++++++++++++++++++++`, productForPrice);
 
     const orderValue = await cart.calculateTotal(productForPrice);
     cart.total = orderValue;

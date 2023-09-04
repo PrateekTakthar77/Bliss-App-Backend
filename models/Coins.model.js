@@ -17,6 +17,10 @@ const coinPriceSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
       },
+      gst: {
+        type: Number,
+        required: true,
+      }
     },
   ],
   createdAt: {

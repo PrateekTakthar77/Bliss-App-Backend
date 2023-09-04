@@ -23,7 +23,7 @@ const productSchema = new mongoose.Schema({
   //   ref: "Category",
   //   required: true,
   // },
-  mcharges: String,
+  mcharges: Number,
   category: String,
   subcategory: { type: String },
   brand: String,

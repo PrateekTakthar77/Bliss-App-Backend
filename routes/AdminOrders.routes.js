@@ -15,6 +15,7 @@ const {
   getLastGramPrice,
   getAllGramPrices,
   getAllCoinPrices,
+  calculateTabledata
 } = require("../controllers/admin/CoinManagement");
 
 router.get(
@@ -57,16 +58,18 @@ router.post(
 router.put("/salesperson/:id", updateSalesperson);
 
 //add gram price
-router.post("/gram-price", createGramPrice);
+router.post("/gram-price", createGramPrice);  // working and tested
 //add coin price
-router.post("/coin-price", createCoinPrice);
+router.post("/coin-price", createCoinPrice);  // working and tested
 //get last gram price
-router.get("/last-gram-price", getLastGramPrice);
+router.get("/last-gram-price", getLastGramPrice);    // working and tested
 //get last coin price
-router.get("/last-coin-price", getLastCoinPrice);
+router.get("/last-coin-price", getLastCoinPrice);   // working and tested
 //get all gram prices
-router.get("/all-gram-prices", getAllGramPrices);
+router.get("/all-gram-prices", getAllGramPrices); // working and tested
 //get all coin prices
-router.get("/all-coin-prices", getAllCoinPrices);
+router.get("/all-coin-prices", getAllCoinPrices);  // working and tested
+
+router.get("/table", calculateTabledata);
 
 module.exports = router;

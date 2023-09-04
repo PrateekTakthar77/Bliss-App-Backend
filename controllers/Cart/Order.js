@@ -51,16 +51,16 @@ const createOrder = async (req, res) => {
 const updateOrder = async (req, res) => {
   try {
     const orderId = req.params.id;
-    const { address } = req.body;
+    const { state } = req.body;
     const order = await Order.findByIdAndUpdate(
       orderId,
-      { address },
+      { state },
       { new: true }
     );
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
-    res.json({ message: "Order updated successfully", order });
+    res.status(200).json({ message: "Order updated successfully", order });
   } catch (error) {
     console.error(error);
     res

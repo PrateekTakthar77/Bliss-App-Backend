@@ -1,6 +1,6 @@
 const { log } = require("firebase-functions/logger");
 const { Product, Category, subCategory } = require("../models/Product");
-
+const making = require('../models/MakingCharges')
 // code written by amar sir
 // const getAllProducts = async (req, res) => {
 //   const { search } = req.query
@@ -123,12 +123,28 @@ const addProduct = async (req, res) => {
       subcategory,
       weight,
       purity,
-      mcharges
     } = req.body;
 
     console.log("Received data", category, subcategory, size)
+    let value;
+    if (category === "Chain") {
+      // check both category and subcategory
+      const charges = await making.findOne({ category, subcategory });
+      console.log(category, subcategory);
+      if (!charges) {
+        // return res.status(403).json({ message: "Category and subcategory not found in Margin collection" });
+        value = 0;
+      }
+      value = charges.makingcharges;
+    } else {
+      // If category is not "chains," only check category
+      const charges = await making.findOne({ category });
 
-
+      if (!charges) {
+        return res.status(406).json({ message: "Category not found in Margin collection" });
+      }
+      value = charges.makingcharges
+    }
     // Find the category by its name
     // let categoryInDb = await Category.findOne({ name: category });
 
@@ -153,7 +169,7 @@ const addProduct = async (req, res) => {
       subcategory,
       weight,
       purity,
-      mcharges
+      mcharges: value
     });
     await product.save();
     res.status(201).json({ message: "Product added successfully", product });

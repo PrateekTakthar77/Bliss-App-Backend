@@ -146,6 +146,40 @@ const createCoinPrice = async (req, res) => {
   }
 };
 
+const calculateTabledata = async (req, res) => {
+  try {
+    const coinPrice = await CoinPrice.findOne({ /* Add your query conditions if needed */ });
+
+    if (!coinPrice) {
+      return res.status(404).json({ message: "Coin price not found" });
+    }
+
+    const gramWeights = [1, 2, 5, 10, 20, 50, 100]; // Gram weights to calculate for
+    const tableData = gramWeights.map(weight => {
+      const weightInfo = coinPrice.weights.find(w => w.weight === weight);
+      if (weightInfo) {
+        const { makingCharges, gst } = weightInfo;
+        const gramPrice = weightInfo.gramPrice || 0; // You need to replace this with your actual gram price value
+        const netAmount = gramPrice * weight + makingCharges + gst;
+        return {
+          weight,
+          gramPrice,
+          makingCharges,
+          gst,
+          netAmount,
+        };
+      }
+      return null;
+    });
+
+    res.status(200).json({ tableData });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error", message: error.message });
+  }
+
+}
+
+
 module.exports = {
   createGramPrice,
   createCoinPrice,
@@ -153,4 +187,5 @@ module.exports = {
   getAllGramPrices,
   getLastCoinPrice,
   getLastGramPrice,
+  calculateTabledata
 };
