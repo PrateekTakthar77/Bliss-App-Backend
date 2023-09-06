@@ -18,7 +18,8 @@ const getAll = async (req, res) => {
         const make = await Making.find({});
         res.status(200).json(make)
     } catch (error) {
-
+        console.log(error);
+        return res.status(500).json({ message: 'Internal server error' });
     }
 }
 // update making charges
