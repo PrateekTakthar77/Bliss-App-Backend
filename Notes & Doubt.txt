@@ -1,2 +1,0 @@
-what is being done on line 44 on auth.js
-and how to create a model for the same 
