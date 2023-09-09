@@ -64,6 +64,8 @@ const addBulkCustomOrders = async (req, res) => {
                 typeofproduct,
                 length,
                 quantity,
+                category,
+                subcategory
             } = orderData;
 
             // Create a new custom order instance
@@ -76,6 +78,8 @@ const addBulkCustomOrders = async (req, res) => {
                 typeofproduct,
                 length,
                 quantity,
+                category,
+                subcategory
             });
 
             // Save the custom order to the database
