@@ -4,8 +4,7 @@ const router = express.Router();
 const { authorizeUser, accessAuth } = require("../middlewares/AccessAuth");
 
 router.get("/", customOrders.getAll);
-router.post("/add", accessAuth,
-    authorizeUser(["Admin", "Dealer"]), customOrders.addCustomOrder);
+router.post("/add", customOrders.addCustomOrder);
 router.post("/bulk", accessAuth,
     authorizeUser(["Admin", "Dealer"]), customOrders.addBulkCustomOrders);
 
