@@ -10,6 +10,8 @@ const addCustomOrder = async (req, res) => {
             typeofproduct,
             length,
             quantity,
+            category,
+            subcategory
         } = req.body;
         const custom = new Customorder({
             images,
@@ -20,10 +22,11 @@ const addCustomOrder = async (req, res) => {
             typeofproduct,
             length,
             quantity,
+            category,
+            subcategory
         });
         await custom.save();
         const user = req.user;
-        // console.log(`helllllllllllllo`, user);
         res.status(201).json({ message: "Custom order added successfully", custom });
     } catch (error) {
         console.log(error);

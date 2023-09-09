@@ -9,6 +9,7 @@ const customOrderSchema = new mongoose.Schema({
     typeofproduct: String,
     images: [String],
     category: String,
+    subcategory: String,
     material: String,
     purity: String,
     weight: String,
