@@ -34,7 +34,7 @@ const getAllProducts = async (req, res) => {
     if (search) {
       products = await Product.find({
         $or: [
-          // { category: new RegExp(search, 'i') },
+          { category: new RegExp(search, 'i') },
           { subcategory: new RegExp(search, 'i') },
           // { name: new RegExp(search, 'i') },
           { purity: new RegExp(search, 'i') }
