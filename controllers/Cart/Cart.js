@@ -1,12 +1,16 @@
 const Cart = require("../../models/Cart.model");
 const Order = require("../../models/Order.model");
+const User = require("../../models/User.model")
 const { Types, isValidObjectId } = require('mongoose')
-const createError = require('http-errors')
-
+const createError = require('http-errors');
+const sendEmail = require("../../utils/sendEmail");
+const nodemailer = require("nodemailer")
+require("dotenv").config();
 
 const { v4: uuidv4 } = require("uuid");
 const { Product } = require("../../models/Product");
 const { log } = require("firebase-functions/logger");
+const { user } = require("firebase-functions/v1/auth");
 const getCart = async (req, res) => {
   console.log("i am in getCart", req.user);
   try {
@@ -130,15 +134,63 @@ const updateCartOrderState = async (req, res) => {
       return res.status(400).json({ error: "OrderId and status are required" });
     }
     // Retrieve the current user's shopping cart from the database
-    const user = req.user; // Assuming the user is authenticated and available in the request object
+    // const user = await User.findById(user) // Assuming the user is authenticated and available in the request object
     const order = await Order.findOne({ _id: orderId });
-    console.log("order", orderId);
+    // console.log("order", orderId);
     if (!order) {
       return res.status(404).json({ error: "Order not found" });
     }
+
+    // Get the user ID from the order
+    const userId = order.user;
+
+    // Find the user by their ID and retrieve their email
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
     // Update the quantity of the item
-    order.state = statusState;
+    // order.state = statusState;
     order.status = statusState;
+    // user's email
+    const emailContent = `your orders has been updated ${order.status}`
+    const userEmail = user.email;
+    await sendEmail(userEmail, "Email sent", emailContent)
+    console.log(`1231233333333333333333333333333333333333333333333333333`, userEmail);
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.USER,
+        pass: process.env.PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: {
+        name: 'Jewellery Bliss',
+        address: process.env.USER
+      }, // sender address
+      to: userEmail, // list of receivers
+      subject: "Welcome to jewellery Bliss", // Subject line
+      text: `your orders has been updated ${order.status}`, // plain text body
+      // html: "<b>Hello world?</b>", // html body
+    };
+
+    const sendMail = async (transporter, mailOptions) => {
+      try {
+        await transporter.sendMail(mailOptions)
+        console.log("Mail Sent succesfully")
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    sendMail(transporter, mailOptions)
 
     // Save the updated cart to the database
     await order.save();
@@ -230,7 +282,41 @@ const processCheckout = async (req, res) => {
     console.log("orderValueFromCart", orderValueFromCart, cart);
 
     // Proceed to checkout with the "orderValue"
+    const userEmail = user.email;
+    console.log(`User Email:`, userEmail);
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.USER,
+        pass: process.env.PASSWORD,
+      },
+    });
 
+    const mailOptions = {
+      from: {
+        name: 'Jewellery Bliss',
+        address: process.env.USER
+      }, // sender address
+      to: userEmail, // list of receivers
+      subject: "Welcome to jewellery Bliss", // Subject line
+      text: "Thank you for shooping at jewellery Bliss", // plain text body
+      // html: "<b>Hello world?</b>", // html body
+    };
+
+    const sendMail = async (transporter, mailOptions) => {
+      try {
+        await transporter.sendMail(mailOptions)
+        console.log("Mail Sent succesfully")
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    sendMail(transporter, mailOptions)
+    // email: user.email,
     const order = new Order({
       user: user._id,
       items: cart.items.map((item) => ({

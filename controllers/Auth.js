@@ -13,6 +13,8 @@ const { user } = require("firebase-functions/v1/auth");
 const { log } = require("firebase-functions/logger");
 const { TransactionalEmailsApi } = SibApiV3Sdk;
 const { ApiClient } = SibApiV3Sdk;
+const nodemailer = require("nodemailer")
+require("dotenv").config();
 
 //mail api setup
 sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
@@ -40,6 +42,7 @@ const registerUser = asyncHandler(async (req, res) => {
       });
     }
 
+
     const { name, mobile, email, password, role } = req.body;
     const userExistsWithMobile = await User.findOne({ mobile });
     const userExistsWithEmail = await User.findOne({ email });
@@ -65,8 +68,42 @@ const registerUser = asyncHandler(async (req, res) => {
         message: "Looks like your mobile already Exists.",
       });
     }
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.USER,
+        pass: process.env.PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: {
+        name: 'Jewellery Bliss',
+        address: process.env.USER
+      }, // sender address
+      to: email, // list of receivers
+      subject: "Welcome to jewellery Bliss", // Subject line
+      text: "Welcome to jewellery Bliss your Registration has been sucessfull, enjoy your time on our APP", // plain text body
+      // html: "<b>Hello world?</b>", // html body
+    };
+
+    const sendMail = async (transporter, mailOptions) => {
+      try {
+        await transporter.sendMail(mailOptions)
+        console.log("Mail Sent succesfully")
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    sendMail(transporter, mailOptions)
     const otp = generateOTP(6); // Generate a 6-digit OTP
     const hashedPassword = await bcrypt.hash(password, 10);
+
     const newUser = await User.create({
       name,
       mobile,
@@ -116,15 +153,47 @@ const forgotPassword = async (req, res) => {
         message: `User Not Found with ${email}`
       });
     }
+    // mail function
     const resetToken = generateJwtToken({ name: user.name, email: user.email, _id: user.id, userCount: user.userCount, mobile: user.mobile }); // Implement this function
     user.resetToken = resetToken;
     user.resetTokenExpires = Date.now() + 60 * 60 * 1000; // Token expires in 60 minutes
-    // const newuser = await user.save();
     await user.save();
     const resetLink = `http://localhost:5009/resetpassword/${resetToken}`;
     const emailContent = `If you requested to reset your password, reset now within 60 minutes. Otherwise, ignore this message. <a href="${resetLink}">Click to Reset</a>`;
-    await sendEmail(user.email, "Password Reset Request", emailContent);
-    console.log("Reset email sent successfully");
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.USER,
+        pass: process.env.PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: {
+        name: 'Jewellery Bliss',
+        address: process.env.USER
+      }, // sender address
+      to: email, // list of receivers
+      subject: "Password Reset Request", // Subject line
+      text: `${emailContent}`, // plain text body
+    };
+
+    const sendMail = async (transporter, mailOptions) => {
+      try {
+        await transporter.sendMail(mailOptions)
+        console.log("Mail Sent succesfully")
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    sendMail(transporter, mailOptions)
+    // 
+
     await user.save();
     res.status(200).json({
       success: true,
