@@ -37,10 +37,10 @@ const getOrderById = async (req, res) => {
 // Create a new order
 const createOrder = async (req, res) => {
   try {
-    const { user, items, address, total } = req.body;
+    const { user, items, address, total, email } = req.body;
     console.log(total, user, items, address);
-    const userEmail = user.email;
-    console.log(`User Email:`, userEmail);
+    // const userEmail = user.email;
+    console.log(`User Email:`, email);
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       host: "smtp.gmail.com",
@@ -57,7 +57,7 @@ const createOrder = async (req, res) => {
         name: 'Jewellery Bliss',
         address: process.env.USER
       }, // sender address
-      to: userEmail, // list of receivers
+      to: email, // list of receivers
       subject: "Welcome to jewellery Bliss", // Subject line
       text: "Thank you for shooping at jewellery Bliss", // plain text body
       // html: "<b>Hello world?</b>", // html body
