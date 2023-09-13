@@ -37,7 +37,7 @@ app.use(cors());
 
 let count = 0;
 app.get("/", (req, res) => {
-  res.send(`Welcome To Jwell Bliss ${count++}`);
+  res.send(`Welcome To Jwell Bliss Server managed by Prateek Takthar ${count++}`);
 });
 
 app.get('/products/', async (req, res, next) => {
