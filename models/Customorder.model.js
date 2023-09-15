@@ -15,7 +15,10 @@ const customOrderSchema = new mongoose.Schema({
     weight: String,
     length: Number,
     size: Number,
-    quantity: Number
+    quantity: Number,
+    status: {
+        type: String
+    }
 });
 
 const Customorder = mongoose.model("Custom-Order", customOrderSchema);
