@@ -1,3 +1,4 @@
+const { any } = require("joi");
 const Bookings = require("../models/Bookings.model");
 
 const createBookings = async (req, res) => {
@@ -23,4 +24,16 @@ const getAllBookings = async (req, res) => {
     }
 }
 
-module.exports = { createBookings, getAllBookings }
+const deleteBooking = async (req, res) => {
+    try {
+        const { bookingId } = req.body
+        console.log("Booking Deleted Sucessfully", bookingId);
+        const booking = await Bookings.findByIdAndDelete(bookingId)
+        res.json({ message: "Product deleted successfully", booking });
+    } catch (error) {
+        res
+            .status(500)
+            .json({ payload: null, message: error.message || "An error occurred" });
+    }
+}
+module.exports = { createBookings, getAllBookings, deleteBooking }
