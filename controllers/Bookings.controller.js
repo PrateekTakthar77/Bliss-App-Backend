@@ -1,4 +1,3 @@
-const { any } = require("joi");
 const Bookings = require("../models/Bookings.model");
 
 const createBookings = async (req, res) => {
