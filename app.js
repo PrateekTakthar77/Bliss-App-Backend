@@ -15,9 +15,10 @@ const errorReqRouter = require("./middlewares/errorRouteHandler");
 const cartRouter = require("./routes/Cart.routes");
 const orderRoutes = require("./routes/Order.routes");
 const adminRouter = require("./routes/AdminOrders.routes");
-const makingCharges = require("./routes/makingcharges.routes")
-const Bookings = require("./routes/bookings.routes")
-const customorder = require("./routes/Customorder.routes")
+const makingCharges = require("./routes/makingcharges.routes");
+const Bookings = require("./routes/bookings.routes");
+const customorder = require("./routes/Customorder.routes");
+const Premium = require("./routes/Premium.routes");
 // const userRouter = require("./routes/user.routes")
 const { authorizeUser } = require("./middlewares/AccessAuth");
 
@@ -70,6 +71,8 @@ app.use(
   },
   productRouter
 );
+
+app.use('/api/premium', Premium)
 
 app.use('/api/customorders', customorder)
 
