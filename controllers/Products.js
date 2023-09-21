@@ -25,21 +25,31 @@ const making = require('../models/MakingCharges')
 //   }
 // };
 
+
 const getAllProducts = async (req, res) => {
-  const { search } = req.query;
+  const { search, searchPurity } = req.query;
   console.log(`SEARCH All Products`, search);
+  console.log(`SEARCH Purity`, searchPurity);
   try {
     let products;
 
+    const query = {};
+
     if (search) {
-      products = await Product.find({
-        $or: [
-          { category: new RegExp(search, 'i') },
-          { subcategory: new RegExp(search, 'i') },
-          // { name: new RegExp(search, 'i') },
-          { purity: new RegExp(search, 'i') }
-        ],
-      });
+      query.$or = [
+        { category: new RegExp(search, 'i') },
+        { subcategory: new RegExp(search, 'i') },
+        // { name: new RegExp(search, 'i') },
+        // { purity: new RegExp(search, 'i') },
+      ];
+    }
+
+    if (searchPurity) {
+      query.purity = new RegExp(searchPurity, 'i');
+    }
+
+    if (Object.keys(query).length > 0) {
+      products = await Product.find(query);
     } else {
       products = await Product.find();
     }
@@ -49,6 +59,34 @@ const getAllProducts = async (req, res) => {
     res.status(500).json({ error: error, message: error.message });
   }
 };
+
+
+
+// const getAllProducts = async (req, res) => {
+//   const { search } = req.query;
+//   const { searchPurity } = req.query;
+//   console.log(`SEARCH All Products`, search);
+//   try {
+//     let products;
+
+//     if (search) {
+//       products = await Product.find({
+//         $or: [
+//           { category: new RegExp(search, 'i') },
+//           { subcategory: new RegExp(search, 'i') },
+//           // { name: new RegExp(search, 'i') },
+//           { purity: new RegExp(search, 'i') }
+//         ],
+//       });
+//     } else {
+//       products = await Product.find();
+//     }
+
+//     res.json(products);
+//   } catch (error) {
+//     res.status(500).json({ error: error, message: error.message });
+//   }
+// };
 
 // testing Product
 // const searchAllProducts = async (req, res) => {
