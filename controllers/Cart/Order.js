@@ -37,10 +37,17 @@ const getOrderById = async (req, res) => {
 // Create a new order
 const createOrder = async (req, res) => {
   try {
-    const { user, items, address, total, email } = req.body;
+    const { user, items, address, total } = req.body;
     console.log(total, user, items, address);
-    // const userEmail = user.email;
-    console.log(`User Email:`, email);
+
+    // Get the user ID from the order
+    const userId = user;
+
+    const userdata = await User.findById(userId);
+    if (!userdata) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const userEmail = userdata.email;
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       host: "smtp.gmail.com",
@@ -57,7 +64,7 @@ const createOrder = async (req, res) => {
         name: 'Jewellery Bliss',
         address: process.env.USER
       }, // sender address
-      to: email, // list of receivers
+      to: userEmail, // list of receivers
       subject: "Welcome to jewellery Bliss", // Subject line
       text: "Thank you for shooping at jewellery Bliss", // plain text body
       // html: "<b>Hello world?</b>", // html body
