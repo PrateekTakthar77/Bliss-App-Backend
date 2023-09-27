@@ -39,6 +39,7 @@ const createOrder = async (req, res) => {
   try {
     const { user, items, address, total } = req.body;
     console.log(total, user, items, address);
+    const order = new Order({ total, user, items, address, orderId: uuidv4() });
 
     // Get the user ID from the order
     const userId = user;
@@ -65,9 +66,15 @@ const createOrder = async (req, res) => {
         address: process.env.USER
       }, // sender address
       to: userEmail, // list of receivers
-      subject: "Welcome to jewellery Bliss", // Subject line
-      text: "Thank you for shooping at jewellery Bliss", // plain text body
-      // html: "<b>Hello world?</b>", // html body
+      subject: "Thank You for Your Purchase!",
+      text: `Dear ${userdata.name},
+      We want to express our heartfelt gratitude for choosing Jewellery Bliss for your recent purchase. Your trust in us means the world, and we're excited to have you as part of our valued customer family.
+      Your Order Details:
+      Order Number: ${order.orderId}
+      We're thrilled that you've selected Jewellery Bliss, and we hope it brings you immense joy and satisfaction. Our team is dedicated to delivering top-notch quality and service, and your purchase reaffirms our commitment.
+      If you have any questions or need assistance with your order, please don't hesitate to contact our friendly customer support team at [Customer Support Email/Phone]. We're here to help and ensure your experience with us is nothing short of excellent.
+      Thank you once again for choosing Jewellery Bliss. We look forward to serving you in the future and providing you with even more exceptional products and services.
+      Warm regards,`,
     };
 
     const sendMail = async (transporter, mailOptions) => {
@@ -80,7 +87,7 @@ const createOrder = async (req, res) => {
     }
 
     sendMail(transporter, mailOptions)
-    const order = new Order({ total, user, items, address, orderId: uuidv4() });
+
     await order.save();
     res.status(201).json({ message: "Order created successfully", order });
   } catch (error) {
