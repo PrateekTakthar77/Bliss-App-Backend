@@ -37,8 +37,8 @@ const getAllProducts = async (req, res) => {
 
     if (search) {
       query.$or = [
-        { category: new RegExp(search, 'i') },
-        { subcategory: new RegExp(search, 'i') },
+        { category: search },
+        { subcategory: search },
         // { name: new RegExp(search, 'i') },
         // { purity: new RegExp(search, 'i') },
       ];

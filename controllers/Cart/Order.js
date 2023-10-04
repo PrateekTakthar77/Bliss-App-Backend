@@ -40,7 +40,8 @@ const createOrder = async (req, res) => {
     const { user, items, address, total } = req.body;
     console.log(total, user, items, address);
     const order = new Order({ total, user, items, address, orderId: uuidv4() });
-
+    // console.log(process.env.USER)
+    // console.log(process.env.PASSWORD)
     // Get the user ID from the order
     const userId = user;
 
@@ -58,6 +59,7 @@ const createOrder = async (req, res) => {
         user: process.env.USER,
         pass: process.env.PASSWORD,
       },
+
     });
 
     const mailOptions = {
