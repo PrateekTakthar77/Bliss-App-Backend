@@ -14,6 +14,7 @@ router.get("/order/:id", getOrderById);
 router.post("/direct", Order.createOrder);
 router.post("/discount", Order.applyDiscountToOrder);
 router.put("/state/:id", updateOrder); // use _id 
+router.post("/send", Order.sendMessage)
 // router.delete("/:id", ordersController.cancelOrder);
 
 module.exports = router;

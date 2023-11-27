@@ -41,12 +41,12 @@ app.get("/", (req, res) => {
   res.send(`Welcome To Jwell Bliss Server managed by Prateek Takthar ${count++}`);
 });
 
-app.get('/products/', async (req, res, next) => {
+// app.get('/products/', async (req, res, next) => {
 
 
-  let products = await Product.findById('64941d38825d2793151c9478').exec()
-  return res.json(products)
-})
+//   let products = await Product.findById('64941d38825d2793151c9478').exec()
+//   return res.json(products)
+// })
 app.use(
   "/api/auth",
   (res, req, next) => {
