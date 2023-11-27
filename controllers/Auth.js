@@ -149,8 +149,6 @@ const registerUser = asyncHandler(async (req, res) => {
 
 // forgot pass 
 const User = require("../models/User.model");
-const sendEmail = require("../utils/sendEmail");
-
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
 

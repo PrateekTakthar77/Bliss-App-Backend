@@ -216,6 +216,7 @@ const sendMessage = async (req, res) => {
     const { orderId, message } = req.body;
     console.log(message)
     console.log(orderId)
+    console.log(process.env.USER)
     // const orderId = req.params.id;
     const order = await Order.findByIdAndUpdate(
       orderId

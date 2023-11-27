@@ -1,10 +1,9 @@
 const Cart = require("../../models/Cart.model");
 const Order = require("../../models/Order.model");
-const User = require("../../models/User.model")
-const { Types, isValidObjectId } = require('mongoose')
-const createError = require('http-errors');
-const sendEmail = require("../../utils/sendEmail");
-const nodemailer = require("nodemailer")
+const User = require("../../models/User.model");
+const { Types, isValidObjectId } = require("mongoose");
+const createError = require("http-errors");
+const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 const { v4: uuidv4 } = require("uuid");
@@ -17,11 +16,10 @@ const getCart = async (req, res) => {
     // Retrieve the current user's shopping cart from the database
     console.log("i am in getCart", req.user);
     const user = req.user; // Assuming the user is authenticated and available in the request object
-    const cart = await Cart.findOne({ user: user._id })
-      .populate({
-        path: 'items.product',
-        model: 'product'
-      })
+    const cart = await Cart.findOne({ user: user._id }).populate({
+      path: "items.product",
+      model: "product",
+    });
 
     // .populate(
     //   "items.product"
@@ -66,7 +64,7 @@ const addItemToCart = async (req, res, next) => {
       cart.items.push({ product: productId, quantity: parseInt(quantity) });
     }
     if (!isValidObjectId(productId)) {
-      next(createError('ProductId is invalid'))
+      next(createError("ProductId is invalid"));
     }
     const productForPrice = await Product.findById(productId).select("price");
 
@@ -130,6 +128,7 @@ const updateCartOrderState = async (req, res) => {
   try {
     // Extract the item ID and quantity from the request parameters and body
     const { orderId, statusState } = req.body;
+    console.log("hjhhjhjhjjhjhjhjhjhhjjhhj" + orderId)
     if (!orderId || !statusState) {
       return res.status(400).json({ error: "OrderId and status are required" });
     }
@@ -154,13 +153,16 @@ const updateCartOrderState = async (req, res) => {
     // order.state = statusState;
     order.status = statusState;
     // user's email
-    const emailContent = `your orders has been updated ${order.status}`
+    const emailContent = `your orders has been updated ${order.status}`;
     const userEmail = user.email;
-    await sendEmail(userEmail, "Email sent", emailContent)
-    console.log(`1231233333333333333333333333333333333333333333333333333`, userEmail);
+    await sendEmail(userEmail, "Email sent", emailContent);
+    // console.log(
+    //   `1231233333333333333333333333333333333333333333333333333`,
+    //   userEmail
+    // );
 
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       host: "smtp.gmail.com",
       port: 587,
       secure: false,
@@ -172,25 +174,30 @@ const updateCartOrderState = async (req, res) => {
 
     const mailOptions = {
       from: {
-        name: 'Jewellery Bliss',
-        address: process.env.USER
+        name: "Jewellery Bliss",
+        address: process.env.USER,
       }, // sender address
       to: userEmail, // list of receivers
-      subject: "Welcome to jewellery Bliss", // Subject line
-      text: `your orders has been updated ${order.status}`, // plain text body
-      // html: "<b>Hello world?</b>", // html body
+      subject: `Update on Your Recent Order with Jewellery Bliss`, // Subject line
+      text: `
+      your orders has been updated 
+      Dear ${user.name},
+      We hope this message finds you well. We wanted to provide you with an update on your recent order ID ${orderId} with Jewellery Bliss.
+      Your Order Status: ${order.status}
+      If you have any questions, or concerns, or require further assistance, please don't hesitate to reach out to our customer support team. We're here to ensure your shopping experience with Jewellery Bliss is exceptional.
+      Thank you for choosing Jewellery Bliss. We look forward to serving you again in the future. `,
     };
 
     const sendMail = async (transporter, mailOptions) => {
       try {
-        await transporter.sendMail(mailOptions)
-        console.log("Mail Sent succesfully")
+        await transporter.sendMail(mailOptions);
+        console.log("Mail Sent succesfully");
       } catch (error) {
         console.log(error);
       }
-    }
+    };
 
-    sendMail(transporter, mailOptions)
+    sendMail(transporter, mailOptions);
 
     // Save the updated cart to the database
     await order.save();
@@ -219,7 +226,6 @@ const removeCartItem = async (req, res) => {
       return res.status(404).json({ error: "Cart not found" });
     }
 
-
     const itemIndex = cart.items.findIndex(
       (item) => item.product.toString() === id
     );
@@ -227,11 +233,15 @@ const removeCartItem = async (req, res) => {
     if (itemIndex === -1) {
       return res.status(404).json({ error: "Item not found in cart" });
     }
-    cart.items.forEach((item) => { console.log(item.product) })
+    cart.items.forEach((item) => {
+      console.log(item.product);
+    });
     // Find the index of the item in the cart and filter it
 
-    cart.items = cart.items.filter((item) => { return item.product.toString() !== id })
-    console.log("Removed item and now the cart is", cart)
+    cart.items = cart.items.filter((item) => {
+      return item.product.toString() !== id;
+    });
+    console.log("Removed item and now the cart is", cart);
     // Save the updated cart to the database
     await cart.save();
 
@@ -258,11 +268,10 @@ const processCheckout = async (req, res) => {
     // const cart = await Cart.findOne({ user: user._id }).populate(
     //   "items.product"
     // );
-    const cart = await Cart.findOne({ user: user._id })
-      .populate({
-        path: 'items.product',
-        model: 'product'
-      })
+    const cart = await Cart.findOne({ user: user._id }).populate({
+      path: "items.product",
+      model: "product",
+    });
 
     if (!cart) {
       return res.status(404).json({ error: "Cart not found" });
@@ -285,7 +294,7 @@ const processCheckout = async (req, res) => {
     const userEmail = user.email;
     console.log(`User Email:`, userEmail);
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       host: "smtp.gmail.com",
       port: 587,
       secure: false,
@@ -297,8 +306,8 @@ const processCheckout = async (req, res) => {
 
     const mailOptions = {
       from: {
-        name: 'Jewellery Bliss',
-        address: process.env.USER
+        name: "Jewellery Bliss",
+        address: process.env.USER,
       }, // sender address
       to: userEmail, // list of receivers
       subject: "Welcome to jewellery Bliss", // Subject line
@@ -308,14 +317,14 @@ const processCheckout = async (req, res) => {
 
     const sendMail = async (transporter, mailOptions) => {
       try {
-        await transporter.sendMail(mailOptions)
-        console.log("Mail Sent succesfully")
+        await transporter.sendMail(mailOptions);
+        console.log("Mail Sent succesfully");
       } catch (error) {
         console.log(error);
       }
-    }
+    };
 
-    sendMail(transporter, mailOptions)
+    sendMail(transporter, mailOptions);
     // email: user.email,
     const order = new Order({
       user: user._id,
