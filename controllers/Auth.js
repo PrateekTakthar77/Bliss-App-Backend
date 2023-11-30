@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-// const User = require("../models/User.model");
+const User = require("../models/User.model");
 const { generateJwtToken } = require("../helpers/JWT.Verify");
 const asyncHandler = require("express-async-handler");
 const Joi = require("joi");
@@ -47,7 +47,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const userExistsWithMobile = await User.findOne({ mobile });
     const userExistsWithEmail = await User.findOne({ email });
 
-    // to create a new admin comment down the bottom code
+    // to restricy creating a new admin uncomment down the bottom code
     // if (role === "Admin" || role === "admin") {
     //   return res.status(401).json({
     //     payload: null,
@@ -148,7 +148,6 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 // forgot pass 
-const User = require("../models/User.model");
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
 
