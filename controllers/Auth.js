@@ -87,18 +87,18 @@ const registerUser = asyncHandler(async (req, res) => {
       }, // sender address
       to: email, // list of receivers
       subject: "Thank You for Registering on Jewellery Bliss!",
-      text: `Dear ${name},
-      We are delighted to welcome you to the Jewellery Bliss community! Thank you for taking the first step towards an enhanced experience.
-      
-      We want you to know how much we appreciate your trust in us. Your registration means a lot, and we're excited to have you as part of our app family.
-      With Jewellery Bliss, you unlock a world of possibilities. Whether it's exploring exciting features, accessing exclusive content, or staying connected with like-minded individuals, you're in for a treat.
-      If you have any questions or need assistance as you navigate through the app, please don't hesitate to reach out to our dedicated support team . We're here to ensure your experience with us is smooth and enjoyable.
-      Thank you once again for choosing Jewellery Bliss. We look forward to providing you with an exceptional and tailored experience.
-      Best regards,
-      
-      Jewellery Bliss
-      `, // plain text body
-      // html: "<b>Hello world?</b>", // html body
+      text:
+        `Dear ${name},<br>
+        We are delighted to welcome you to the Jewellery Bliss community! Thank you for taking the first step towards an enhanced experience.<br>
+        <br>
+         We want you to know how much we appreciate your trust in us. Your registration means a lot, and we're excited to have you as part of our app family.<br>
+        With Jewellery Bliss, you unlock a world of possibilities. Whether it's exploring exciting features, accessing exclusive content, or staying connected with like-minded individuals, you're in for a treat.<br><br>
+        
+        If you have any questions or need assistance as you navigate through the app, please don't hesitate to reach out to our dedicated support team . We're here to ensure your experience with us is smooth and enjoyable<br><br>
+        Thank you once again for choosing Jewellery Bliss. We look forward to providing you with an exceptional and tailored experience.<br>
+        Best regards,<br>
+        <br>
+        Jewellery Bliss<br>`,
     };
 
     const sendMail = async (transporter, mailOptions) => {

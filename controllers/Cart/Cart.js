@@ -128,7 +128,7 @@ const updateCartOrderState = async (req, res) => {
   try {
     // Extract the item ID and quantity from the request parameters and body
     const { orderId, statusState } = req.body;
-    console.log("hjhhjhjhjjhjhjhjhjhhjjhhj" + orderId)
+    // console.log("hjhhjhjhjjhjhjhjhjhhjjhhj" + orderId)
     if (!orderId || !statusState) {
       return res.status(400).json({ error: "OrderId and status are required" });
     }
@@ -310,9 +310,19 @@ const processCheckout = async (req, res) => {
         address: process.env.USER,
       }, // sender address
       to: userEmail, // list of receivers
-      subject: "Welcome to jewellery Bliss", // Subject line
-      text: "Thank you for shooping at jewellery Bliss", // plain text body
-      // html: "<b>Hello world?</b>", // html body
+      subject: `Thank You for Your Purchase!`, // Subject line
+      text: `Dear Customer,
+      We want to express our heartfelt gratitude for choosing Jewellery Bliss for your recent purchase. Your trust in us means the world, and we're excited to have you as part of our valued customer family.
+      Your Order Details:
+      Order Number: #[Order Number]
+      Date of Purchase: [Date of Purchase]
+      We're thrilled that you've selected [Product/Service Name], and we hope it brings you immense joy and satisfaction. Our team is dedicated to delivering top-notch quality and service, and your purchase reaffirms our commitment.
+      If you have any questions or need assistance with your order, please don't hesitate to contact our friendly customer support team at [Customer Support Email/Phone]. We're here to help and ensure your experience with us is nothing short of excellent.
+      Thank you once again for choosing Jewellery Bliss. We look forward to serving you in the future and providing you with even more exceptional products and services.
+      Warm regards,
+      [Your Name]
+      Jewellery Bliss
+      `
     };
 
     const sendMail = async (transporter, mailOptions) => {
