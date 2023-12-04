@@ -316,7 +316,7 @@ const processCheckout = async (req, res) => {
       Your Order Details:
       Order Number: #[Order Number]
       Date of Purchase: [Date of Purchase]
-      We're thrilled that you've selected [Product/Service Name], and we hope it brings you immense joy and satisfaction. Our team is dedicated to delivering top-notch quality and service, and your purchase reaffirms our commitment.
+      We're thrilled that you've selected Jewellry Bliss, and we hope it brings you immense joy and satisfaction. Our team is dedicated to delivering top-notch quality and service, and your purchase reaffirms our commitment.
       If you have any questions or need assistance with your order, please don't hesitate to contact our friendly customer support team at [Customer Support Email/Phone]. We're here to help and ensure your experience with us is nothing short of excellent.
       Thank you once again for choosing Jewellery Bliss. We look forward to serving you in the future and providing you with even more exceptional products and services.
       Warm regards,
